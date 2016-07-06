@@ -1,0 +1,37 @@
+//--------------------------------------------------
+//File:         tb_test_rgbz_no_resize.sv
+//Description:  T2R3 TB Test 3 Comp Z No Resize
+//Author:       ZHOU Jiemin
+//Modification History
+//Date          Author        Modification
+//20160610      Jiemin        Creation
+//--------------------------------------------------
+
+class test_rgbz extends base_test;
+
+  `uvm_component_utils(test_rgbz)
+
+  //constructor
+  function new(string name, uvm_component parent);
+    super.new(name, parent);
+  endfunction
+
+  extern virtual task run_phase(uvm_phase phase);
+
+endclass
+
+task test_rgbz::run_phase(uvm_phase phase);
+  reg_seq_rgbz seq;
+  input_seq_rgbz seq2;
+  phase.phase_done.set_drain_time(this, 10000);
+  phase.raise_objection(this);
+  seq = reg_seq_rgbz::type_id::create("seq");
+  seq.start(env.r_agt.sqr);
+  `uvm_info("TEST","---------------------------------------------------------------------",UVM_LOW)
+  `uvm_info("TEST","                       REGISTER SETTING DONE                         ",UVM_LOW)
+  `uvm_info("TEST","---------------------------------------------------------------------",UVM_LOW)
+  #100;
+  seq2 = input_seq_rgbz::type_id::create("seq2");
+  seq2.start(env.i_agt.sqr);
+  phase.drop_objection(this);
+endtask
